@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scenes/environment/moving_platform.gd" id="1_platform"]
+
+[sub_resource type="RectangleShape2D" id="Rectangle_platform"]
+size = Vector2(160, 24)
+
+[node name="MovingPlatform" type="AnimatableBody2D"]
+z_index = -2
+process_physics_priority = -20
+collision_layer = 2
+collision_mask = 0
+sync_to_physics = true
+script = ExtResource("1_platform")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+one_way_collision = true
+one_way_collision_margin = 4.0
+shape = SubResource("Rectangle_platform")
+
+[node name="Body" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-80, -12, 80, -12, 80, 12, -80, 12)
+color = Color(0.16, 0.58, 0.5, 1)
+
+[node name="TopTrim" type="Polygon2D" parent="."]
+z_index = 1
+polygon = PackedVector2Array(-80, -12, 80, -12, 80, -6, -80, -6)
+color = Color(0.4, 0.92, 0.72, 1)
+
+[node name="DirectionMark" type="Polygon2D" parent="."]
+z_index = 1
+polygon = PackedVector2Array(-18, 2, -6, -5, -6, -1, 6, -1, 6, -5, 18, 2, 6, 9, 6, 5, -6, 5, -6, 9)
+color = Color(0.76, 1, 0.88, 0.78)

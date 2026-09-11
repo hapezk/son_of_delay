@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scenes/environment/falling_trap.gd" id="1_trap"]
+
+[sub_resource type="RectangleShape2D" id="Rectangle_body"]
+size = Vector2(92, 48)
+
+[sub_resource type="RectangleShape2D" id="Rectangle_damage"]
+size = Vector2(104, 46)
+
+[sub_resource type="RectangleShape2D" id="Rectangle_trigger"]
+size = Vector2(220, 480)
+
+[node name="FallingTrapActor" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_trap")
+gravity = 1600.0
+
+[node name="BaseCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("Rectangle_body")
+
+[node name="DamageArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 5
+monitorable = false
+
+[node name="DamageShape" type="CollisionShape2D" parent="DamageArea"]
+position = Vector2(0, 22)
+shape = SubResource("Rectangle_damage")
+
+[node name="TriggerArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+monitorable = false
+
+[node name="TriggerShape" type="CollisionShape2D" parent="TriggerArea"]
+position = Vector2(0, 264)
+shape = SubResource("Rectangle_trigger")
+
+[node name="VisualRoot" type="Node2D" parent="."]
+
+[node name="Housing" type="Polygon2D" parent="VisualRoot"]
+polygon = PackedVector2Array(-50, -24, 50, -24, 50, 9, -50, 9)
+color = Color(0.34, 0.15, 0.18, 1)
+
+[node name="TopTrim" type="Polygon2D" parent="VisualRoot"]
+z_index = 1
+polygon = PackedVector2Array(-54, -28, 54, -28, 54, -20, -54, -20)
+color = Color(0.73, 0.36, 0.3, 1)
+
+[node name="Spikes" type="Polygon2D" parent="VisualRoot"]
+z_index = 1
+polygon = PackedVector2Array(-48, 8, -36, 36, -24, 8, -12, 36, 0, 8, 12, 36, 24, 8, 36, 36, 48, 8)
+color = Color(0.96, 0.34, 0.29, 1)

@@ -1,0 +1,12 @@
+/* Canvas 节点文字：居中 + 不换行 */
+.canvas-node .markdown-preview-view {
+  text-align: center !important;
+}
+
+.canvas-node .markdown-preview-view p,
+.canvas-node .markdown-preview-view h1,
+.canvas-node .markdown-preview-view h2,
+.canvas-node .markdown-preview-view h3 {
+  white-space: nowrap !important;
+  text-align: center !important;
+}

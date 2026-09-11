@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://cr7ntv18vm3xe"]
+
+[ext_resource type="PackedScene" uid="uid://dhehcb5mt8fno" path="res://scenes/main.tscn" id="1_main"]
+[ext_resource type="Script" uid="uid://cnio8jv80oel" path="res://test/manual_time_scale_runner.gd" id="2_runner"]
+
+[node name="ManualTimeScaleRunner" type="Node2D" unique_id=72699350]
+script = ExtResource("2_runner")
+
+[node name="Main" parent="." unique_id=1706818336 instance=ExtResource("1_main")]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1331274463]
+position = Vector2(574, 500)
+process_callback = 0

@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://csxstsu3cp4q1"]
+
+[ext_resource type="Script" uid="uid://b5h1v63orsg30" path="res://scenes/combat/sword/sword_weapon.gd" id="1_weapon"]
+[ext_resource type="Script" uid="uid://cdtp7vc12u7g3" path="res://scenes/combat/sword/sword_visual.gd" id="2_visual"]
+
+[node name="SwordWeapon" type="Node2D" unique_id=347624342]
+z_index = 2
+script = ExtResource("1_weapon")
+combo_active_frames = Vector3i(6, 8, 8)
+combo_recovery_frames = Vector3i(14, 20, 30)
+combo_hit_stun_seconds = Vector3(0.25, 0.3, 0.36)
+combo_knockback_distances = Vector3(4, 8, 16)
+charged_windup_frames = 4
+charged_recovery_frames = 30
+
+[node name="Visual" type="Node2D" parent="." unique_id=993221599]
+script = ExtResource("2_visual")
+
+[node name="StatusLabel" type="Label" parent="." unique_id=1244827505]
+visible = false
+offset_left = -105.0
+offset_top = -56.0
+offset_right = 105.0
+offset_bottom = -28.0
+theme_override_colors/font_outline_color = Color(0.05, 0.06, 0.08, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 15
+horizontal_alignment = 1

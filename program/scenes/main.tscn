@@ -1,0 +1,425 @@
+[gd_scene format=3 uid="uid://dhehcb5mt8fno"]
+
+[ext_resource type="PackedScene" uid="uid://b1wbwt0vghwiu" path="res://scenes/actors/delayed_actor_group.tscn" id="1_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://c3gwa0uouysbp" path="res://scenes/actors/player.tscn" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://deefmx5nslcll" path="res://scenes/components/world_time_authority.gd" id="3_time"]
+[ext_resource type="PackedScene" path="res://scenes/combat/enemies/melee_enemy.tscn" id="5_melee_enemy"]
+[ext_resource type="Script" uid="uid://dqt4uvvk2e6ur" path="res://scenes/combat/combat_room.gd" id="6_room"]
+[ext_resource type="Script" uid="uid://1egfy4lwegf5" path="res://scenes/combat/enemies/enemy_delay_controller.gd" id="7_enemy_delay"]
+[ext_resource type="PackedScene" path="res://scenes/components/player_stats_panel.tscn" id="8_stats_panel"]
+[ext_resource type="Script" uid="uid://b2dp78337yjk5" path="res://scenes/components/delay_budget_manager.gd" id="9_delay_budget"]
+[ext_resource type="PackedScene" path="res://scenes/combat/enemies/ranged_enemy.tscn" id="10_ranged_enemy"]
+[ext_resource type="PackedScene" uid="uid://cg08ex210uh8q" path="res://scenes/levels/simple_side_scroll_level.tscn" id="11_side_level"]
+[ext_resource type="Script" uid="uid://bkwlg4n2k1c6h" path="res://scenes/components/side_scroll_camera.gd" id="12_side_camera"]
+[ext_resource type="PackedScene" path="res://scenes/environment/delayable_moving_platform.tscn" id="13_moving_platform"]
+[ext_resource type="PackedScene" path="res://scenes/environment/spike_trap.tscn" id="14_spike_trap"]
+[ext_resource type="PackedScene" path="res://scenes/environment/falling_trap.tscn" id="15_falling_trap"]
+[ext_resource type="PackedScene" path="res://scenes/pickups/weapon_pickup.tscn" id="16_weapon_pickup"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="17_pause"]
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 3
+glow_enabled = true
+glow_levels/1 = 0.8
+glow_levels/2 = 0.55
+glow_levels/3 = 0.25
+glow_intensity = 0.8
+glow_strength = 1.1
+
+[sub_resource type="RectangleShape2D" id="Rectangle_finish"]
+size = Vector2(120, 230)
+
+[node name="Main" type="Node" unique_id=789299804]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=261025883]
+environment = SubResource("Environment_main")
+
+[node name="CombatRoomController" type="Node" parent="." unique_id=940072006]
+process_mode = 3
+script = ExtResource("6_room")
+
+[node name="SideScrollLevel" parent="." unique_id=100668977 instance=ExtResource("11_side_level")]
+
+[node name="EnvironmentGameplay" type="Node2D" parent="." unique_id=1237581920]
+
+[node name="HorizontalPlatform" parent="EnvironmentGameplay" unique_id=683373638 instance=ExtResource("13_moving_platform")]
+position = Vector2(720, 560)
+travel_offset = Vector2(300, 0)
+travel_speed = 90.0
+endpoint_wait_seconds = 0.5
+
+[node name="ConstantSpikes" parent="EnvironmentGameplay" unique_id=1747413442 instance=ExtResource("14_spike_trap")]
+position = Vector2(1060, 649)
+damage = 15.0
+repeat_hit_seconds = 0.6
+
+[node name="TimedSpikes" parent="EnvironmentGameplay" unique_id=1722771625 instance=ExtResource("15_falling_trap")]
+position = Vector2(2110, 170)
+landed_hold_seconds = 0.25
+
+[node name="VerticalLift" parent="EnvironmentGameplay" unique_id=1562965457 instance=ExtResource("13_moving_platform")]
+position = Vector2(2700, 605)
+travel_offset = Vector2(0, -170)
+travel_speed = 85.0
+endpoint_wait_seconds = 0.6
+
+[node name="LateSpikes" parent="EnvironmentGameplay" instance=ExtResource("14_spike_trap")]
+position = Vector2(4010, 649)
+damage = 20.0
+repeat_hit_seconds = 0.55
+
+[node name="LateFallingTrap" parent="EnvironmentGameplay" instance=ExtResource("15_falling_trap")]
+position = Vector2(4930, 150)
+landed_hold_seconds = 0.3
+
+[node name="FinalLift" parent="EnvironmentGameplay" instance=ExtResource("13_moving_platform")]
+position = Vector2(5480, 590)
+travel_offset = Vector2(0, -135)
+travel_speed = 95.0
+endpoint_wait_seconds = 0.5
+
+[node name="WorldTimeAuthority" type="Node" parent="." unique_id=1984368703]
+script = ExtResource("3_time")
+
+[node name="DelayBudgetManager" type="Node" parent="." unique_id=994106930 groups=["delay_budget_manager"]]
+process_mode = 3
+script = ExtResource("9_delay_budget")
+
+[node name="Actors" type="Node" parent="." unique_id=1086757947]
+
+[node name="BodyGroup" parent="Actors" unique_id=492839581 instance=ExtResource("1_0wfyh")]
+actor_scene = ExtResource("1_o5qli")
+can_delay = true
+snap_max_dist = 1.0
+
+[node name="Body" parent="Actors/BodyGroup" unique_id=1678858962 instance=ExtResource("1_o5qli")]
+position = Vector2(160, 625)
+starting_weapon = 1
+facing_deadzone_x = 6.0
+coyote_time_seconds = 0.1
+jump_request_seconds = 0.12
+drop_through_seconds = 0.35
+drop_through_speed = 120.0
+max_health = 100.0
+hurt_invulnerability_seconds = 0.35
+hurt_control_lock_seconds = 0.2
+hurt_stun_multiplier = 1.0
+knockback_received_multiplier = 1.0
+hurt_knockback_speed = 280.0
+hurt_knockback_lift = 180.0
+hurt_knockback_deceleration = 1200.0
+death_respawn_delay_seconds = 0.75
+
+[node name="PreviewBody" parent="Actors/BodyGroup" unique_id=682105398 instance=ExtResource("1_o5qli")]
+position = Vector2(160, 625)
+starting_weapon = 1
+facing_deadzone_x = 6.0
+coyote_time_seconds = 0.1
+jump_request_seconds = 0.12
+drop_through_seconds = 0.35
+drop_through_speed = 120.0
+max_health = 100.0
+hurt_invulnerability_seconds = 0.35
+hurt_control_lock_seconds = 0.2
+hurt_stun_multiplier = 1.0
+knockback_received_multiplier = 1.0
+hurt_knockback_speed = 280.0
+hurt_knockback_lift = 180.0
+hurt_knockback_deceleration = 1200.0
+death_respawn_delay_seconds = 0.75
+
+[node name="Predictor" parent="Actors/BodyGroup" unique_id=193587712 instance=ExtResource("1_o5qli")]
+visible = false
+position = Vector2(160, 625)
+starting_weapon = 1
+facing_deadzone_x = 6.0
+coyote_time_seconds = 0.1
+jump_request_seconds = 0.12
+drop_through_seconds = 0.35
+drop_through_speed = 120.0
+max_health = 100.0
+hurt_invulnerability_seconds = 0.35
+hurt_control_lock_seconds = 0.2
+hurt_stun_multiplier = 1.0
+knockback_received_multiplier = 1.0
+hurt_knockback_speed = 280.0
+hurt_knockback_lift = 180.0
+hurt_knockback_deceleration = 1200.0
+death_respawn_delay_seconds = 0.75
+
+[node name="WeaponPickups" type="Node2D" parent="." unique_id=1100247218]
+
+[node name="BoomerangPickup" parent="WeaponPickups" unique_id=1732172878 instance=ExtResource("16_weapon_pickup")]
+position = Vector2(280, 604)
+weapon_slot = 2
+
+[node name="StaffPickup" parent="WeaponPickups" unique_id=972284586 instance=ExtResource("16_weapon_pickup")]
+position = Vector2(610, 604)
+weapon_slot = 3
+effect_color = Color(0.5529412, 0.49019608, 1, 1)
+
+[node name="Enemies" type="Node2D" parent="." unique_id=1022937009]
+
+[node name="MeleeEnemyA" parent="Enemies" unique_id=250899185 instance=ExtResource("5_melee_enemy")]
+position = Vector2(520, 649)
+max_health = 42.0
+attack_damage = 14.0
+
+[node name="EnemyDelayController" type="Node2D" parent="Enemies/MeleeEnemyA" unique_id=1381235412]
+process_mode = 3
+script = ExtResource("7_enemy_delay")
+preview_scene = ExtResource("5_melee_enemy")
+
+[node name="MeleeEnemyB" parent="Enemies" unique_id=1119287472 instance=ExtResource("5_melee_enemy")]
+position = Vector2(1500, 649)
+max_health = 55.0
+attack_damage = 18.0
+
+[node name="EnemyDelayController" type="Node" parent="Enemies/MeleeEnemyB" unique_id=754261948]
+process_mode = 3
+script = ExtResource("7_enemy_delay")
+preview_scene = ExtResource("5_melee_enemy")
+
+[node name="RangedEnemyA" parent="Enemies" unique_id=1907875377 instance=ExtResource("10_ranged_enemy")]
+position = Vector2(2550, 649)
+max_health = 60.0
+move_speed = 105.0
+
+[node name="EnemyDelayController" type="Node" parent="Enemies/RangedEnemyA" unique_id=1877004350]
+process_mode = 3
+script = ExtResource("7_enemy_delay")
+preview_scene = ExtResource("10_ranged_enemy")
+
+[node name="MeleeEnemyC" parent="Enemies" instance=ExtResource("5_melee_enemy")]
+position = Vector2(3500, 649)
+max_health = 70.0
+move_speed = 145.0
+attack_damage = 22.0
+
+[node name="EnemyDelayController" type="Node" parent="Enemies/MeleeEnemyC"]
+process_mode = 3
+script = ExtResource("7_enemy_delay")
+preview_scene = ExtResource("5_melee_enemy")
+
+[node name="RangedEnemyB" parent="Enemies" instance=ExtResource("10_ranged_enemy")]
+position = Vector2(4450, 649)
+max_health = 75.0
+move_speed = 110.0
+windup_seconds = 0.48
+recovery_seconds = 1.15
+
+[node name="EnemyDelayController" type="Node" parent="Enemies/RangedEnemyB"]
+process_mode = 3
+script = ExtResource("7_enemy_delay")
+preview_scene = ExtResource("10_ranged_enemy")
+
+[node name="MeleeElite" parent="Enemies" instance=ExtResource("5_melee_enemy")]
+position = Vector2(5250, 649)
+max_health = 90.0
+move_speed = 160.0
+attack_damage = 26.0
+windup_seconds = 0.45
+
+[node name="EnemyDelayController" type="Node" parent="Enemies/MeleeElite"]
+process_mode = 3
+script = ExtResource("7_enemy_delay")
+preview_scene = ExtResource("5_melee_enemy")
+
+[node name="RangedElite" parent="Enemies" instance=ExtResource("10_ranged_enemy")]
+position = Vector2(5850, 649)
+max_health = 90.0
+move_speed = 120.0
+windup_seconds = 0.42
+recovery_seconds = 1.0
+
+[node name="EnemyDelayController" type="Node" parent="Enemies/RangedElite"]
+process_mode = 3
+script = ExtResource("7_enemy_delay")
+preview_scene = ExtResource("10_ranged_enemy")
+
+[node name="FinishGoal" type="Node2D" parent="."]
+position = Vector2(6200, 649)
+
+[node name="Portal" type="Polygon2D" parent="FinishGoal"]
+color = Color(0.25, 0.9, 0.72, 0.72)
+polygon = PackedVector2Array(-52, 0, -52, -220, 52, -220, 52, 0, 32, 0, 32, -196, -32, -196, -32, 0)
+
+[node name="Core" type="Polygon2D" parent="FinishGoal"]
+color = Color(0.55, 0.96, 1, 0.32)
+polygon = PackedVector2Array(-30, -4, -30, -192, 30, -192, 30, -4)
+
+[node name="Status" type="Label" parent="FinishGoal"]
+offset_left = -120.0
+offset_top = -272.0
+offset_right = 120.0
+offset_bottom = -224.0
+theme_override_colors/font_color = Color(0.72, 1, 0.9, 1)
+theme_override_colors/font_outline_color = Color(0.03, 0.08, 0.08, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+text = "终点封锁"
+horizontal_alignment = 1
+
+[node name="FinishArea" type="Area2D" parent="FinishGoal"]
+position = Vector2(0, -115)
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FinishGoal/FinishArea"]
+shape = SubResource("Rectangle_finish")
+
+[node name="Projectiles" type="Node2D" parent="." unique_id=1518905474 groups=["hostile_projectile_container", "player_projectile_container"]]
+
+[node name="SideScrollCamera" type="Camera2D" parent="." unique_id=1891301971]
+position = Vector2(640, 360)
+process_callback = 0
+limit_left = 0
+limit_top = 0
+limit_right = 6400
+limit_bottom = 720
+script = ExtResource("12_side_camera")
+target_path = NodePath("../Actors/BodyGroup/Body")
+level_right = 6400.0
+
+[node name="CombatHelp" type="CanvasLayer" parent="." unique_id=1873992613]
+
+[node name="PlayerStatsPanel" parent="CombatHelp" unique_id=122946653 instance=ExtResource("8_stats_panel")]
+player_group_path = NodePath("../../Actors/BodyGroup")
+
+[node name="Controls" type="Label" parent="CombatHelp" unique_id=305234740]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -824.0
+offset_top = 64.0
+offset_right = -24.0
+offset_bottom = 190.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.93, 0.94, 0.91, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.09, 0.1, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 16
+text = "A/D 移动 · W 跳跃 · S 下穿 · 鼠标瞄准 · F 拾取武器 · 1/2/3 切换已解锁武器
+左键普通攻击 · 右键进入/取消蓄力 · 蓄力中左键释放（默认无法移动）
+空格 思考时间 · 指向对象 + 滚轮 / 1 / 2 / 3 / R / Q / E 调整
+非思考时间 Q/E 快调自身；负延迟仅在已归零且动作可加速时生效 · 蓝色预览无碰撞与伤害
+橙色：玩家本体攻击 · 蓝色：玩家预览攻击 · 敌人黄框预警 / 红框生效
+向右探索，清理全部敌人后进入最右侧终点 · 战败会自动返回出生点"
+horizontal_alignment = 2
+
+[node name="WaveStatus" type="Label" parent="CombatHelp" unique_id=1910471949]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -390.0
+offset_top = 20.0
+offset_right = -24.0
+offset_bottom = 54.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.85, 0.94, 1, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.08, 0.1, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 20
+text = "战斗房间 · 剩余敌人 7 / 7"
+horizontal_alignment = 2
+
+[node name="CombatResult" type="CanvasLayer" parent="." unique_id=285288684]
+process_mode = 3
+layer = 20
+visible = false
+
+[node name="Backdrop" type="ColorRect" parent="CombatResult" unique_id=620671322]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.015, 0.025, 0.035, 0.58)
+
+[node name="ResultTitle" type="Label" parent="CombatResult/Backdrop" unique_id=1306792837]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -98.0
+offset_right = 250.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.56, 0.94, 0.64, 1)
+theme_override_colors/font_outline_color = Color(0.03, 0.06, 0.07, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/font_size = 42
+text = "游戏完成"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ResultHint" type="Label" parent="CombatResult/Backdrop" unique_id=495993104]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -30.0
+offset_right = 250.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.9, 0.93, 0.95, 1)
+theme_override_colors/font_outline_color = Color(0.03, 0.06, 0.07, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+text = "已清理全部追猎者并抵达终点"
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="CombatResult/Backdrop" unique_id=1767502832]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -330.0
+offset_top = 34.0
+offset_right = -110.0
+offset_bottom = 82.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 19
+text = "重新开始（Enter）"
+
+[node name="MainMenuButton" type="Button" parent="CombatResult/Backdrop"]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -105.0
+offset_top = 34.0
+offset_right = 105.0
+offset_bottom = 82.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 19
+text = "返回主菜单"
+
+[node name="QuitButton" type="Button" parent="CombatResult/Backdrop"]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 120.0
+offset_top = 34.0
+offset_right = 340.0
+offset_bottom = 82.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 19
+text = "结束游戏"
+
+[node name="PauseMenu" parent="." unique_id=617626008 instance=ExtResource("17_pause")]
+
+[editable path="Actors/BodyGroup"]

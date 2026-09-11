@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://d1ldnwx3rqkxi"]
+
+[ext_resource type="Script" uid="uid://djwk7wmprcb5v" path="res://scenes/combat/projectiles/delayable_projectile.gd" id="1_projectile"]
+
+[sub_resource type="CapsuleShape2D" id="Capsule_bolt"]
+radius = 5.0
+height = 36.0
+
+[node name="StraightMagicBolt" type="CharacterBody2D" unique_id=1749994062]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_projectile")
+launch_speed = 1000.0
+damage = 6.0
+hit_stun_seconds = 0.16
+knockback_distance = 16.2
+lifetime_seconds = 2.0
+max_travel_distance = 600.0
+charged_tier_one_distance_multiplier = 1.2
+charged_tier_two_distance_multiplier = 1.5
+charged_tier_three_distance_multiplier = 2.0
+charged_tier_two_penetrations = 1
+align_visual_to_travel = true
+damage_target_group = &"enemy_damage_body"
+damage_collision_mask = 4
+authority_projectile_group = &"player_magic_bolts"
+move_speed = 680.0
+acceleration = 0.0
+gravity = 0.0
+
+[node name="BaseCollision" type="CollisionShape2D" parent="." unique_id=54988185]
+rotation = 1.5707964
+shape = SubResource("Capsule_bolt")
+
+[node name="BodyVisual" type="Polygon2D" parent="." unique_id=24599769]
+color = Color(0.2, 0.92, 1, 1)
+polygon = PackedVector2Array(-13, -5, 9, -5, 17, 0, 9, 5, -13, 5, -18, 0)
+
+[node name="CoreVisual" type="Polygon2D" parent="." unique_id=260486452]
+z_index = 1
+color = Color(0.92, 1, 1, 1)
+polygon = PackedVector2Array(-8, -2, 8, -2, 13, 0, 8, 2, -8, 2)

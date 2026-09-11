@@ -1,0 +1,86 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scenes/combat/enemies/ranged_enemy.gd" id="1_ranged"]
+[ext_resource type="Script" path="res://scenes/combat/hit_spark.gd" id="2_spark"]
+[ext_resource type="PackedScene" path="res://scenes/combat/projectiles/delayable_projectile.tscn" id="3_projectile"]
+
+[sub_resource type="RectangleShape2D" id="Shape_ranged"]
+size = Vector2(48, 48)
+
+[node name="RangedEnemy" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_ranged")
+move_speed = 95.0
+max_health = 50.0
+detection_range = 1100.0
+disengage_range = 1250.0
+attack_height = 320.0
+windup_seconds = 0.55
+active_seconds = 0.05
+recovery_seconds = 1.35
+projectile_scene = ExtResource("3_projectile")
+preferred_range = 520.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -24)
+shape = SubResource("Shape_ranged")
+
+[node name="Base" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-26, 0, -24, -5, 24, -5, 26, 0)
+color = Color(0.16, 0.15, 0.28, 1)
+
+[node name="Body" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-24, 0, -24, -48, 24, -48, 24, 0)
+color = Color(0.35, 0.20, 0.52, 1)
+
+[node name="Band" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-24, -39, 24, -39, 24, -31, -24, -31)
+color = Color(0.72, 0.30, 1, 1)
+
+[node name="EyeLeft" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-13, -27, -5, -27, -5, -21, -13, -21)
+color = Color(0.60, 0.90, 1, 1)
+
+[node name="EyeRight" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(5, -27, 13, -27, 13, -21, 5, -21)
+color = Color(0.60, 0.90, 1, 1)
+
+[node name="AttackVisual" type="Polygon2D" parent="."]
+visible = false
+z_index = -1
+color = Color(0.72, 0.30, 1, 0.3)
+
+[node name="HitSpark" type="Node2D" parent="."]
+z_index = 3
+script = ExtResource("2_spark")
+
+[node name="HealthBar" type="Node2D" parent="."]
+position = Vector2(-43, -66)
+
+[node name="Background" type="ColorRect" parent="HealthBar"]
+offset_right = 86.0
+offset_bottom = 8.0
+mouse_filter = 2
+color = Color(0.08, 0.09, 0.1, 0.9)
+
+[node name="Fill" type="ColorRect" parent="HealthBar"]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 84.0
+offset_bottom = 6.0
+mouse_filter = 2
+color = Color(0.45098, 0.87451, 0.447059, 1)
+
+[node name="Counter" type="Label" parent="."]
+offset_left = -135.0
+offset_top = -120.0
+offset_right = 135.0
+offset_bottom = -75.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.88, 0.78, 1, 1)
+theme_override_colors/font_outline_color = Color(0.07, 0.04, 0.10, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 16
+text = "远程追猎者"
+horizontal_alignment = 1

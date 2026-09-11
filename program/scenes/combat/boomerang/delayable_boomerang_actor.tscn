@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scenes/combat/boomerang/delayable_boomerang.gd" id="1_boomerang"]
+
+[sub_resource type="CircleShape2D" id="Circle_boomerang"]
+radius = 20.0
+
+[node name="DelayableBoomerang" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_boomerang")
+move_speed = 650.0
+acceleration = 0.0
+gravity = 0.0
+
+[node name="BaseCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("Circle_boomerang")
+
+[node name="BodyVisual" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(20, 0, 7, 4, 10, 17.3205, 0, 8, -10, 17.3205, -7, 4, -20, 0, -7, -4, -10, -17.3205, 0, -8, 10, -17.3205, 7, -4)
+color = Color(0.18, 0.92, 0.76, 1)
+
+[node name="CoreVisual" type="Polygon2D" parent="."]
+z_index = 1
+polygon = PackedVector2Array(8, 0, 4, 6.9282, -4, 6.9282, -8, 0, -4, -6.9282, 4, -6.9282)
+color = Color(1, 0.84, 0.26, 1)

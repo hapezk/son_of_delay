@@ -1,0 +1,469 @@
+[gd_scene load_steps=20 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/actors/delayed_actor_group.tscn" id="1_group"]
+[ext_resource type="PackedScene" path="res://scenes/actors/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scenes/components/world_time_authority.gd" id="3_time"]
+[ext_resource type="Script" path="res://scenes/components/delay_budget_manager.gd" id="4_budget"]
+[ext_resource type="Script" path="res://scenes/components/side_scroll_camera.gd" id="5_camera"]
+[ext_resource type="PackedScene" path="res://scenes/environment/moving_platform.tscn" id="6_platform"]
+[ext_resource type="PackedScene" path="res://scenes/environment/delayable_lift_gate.tscn" id="7_lift_gate"]
+[ext_resource type="PackedScene" path="res://scenes/combat/enemies/melee_enemy.tscn" id="8_dummy"]
+[ext_resource type="PackedScene" path="res://scenes/pickups/weapon_pickup.tscn" id="9_pickup"]
+[ext_resource type="Script" path="res://scenes/tutorial/tutorial_controller.gd" id="10_tutorial"]
+[ext_resource type="PackedScene" path="res://scenes/components/player_stats_panel.tscn" id="11_stats_panel"]
+[ext_resource type="PackedScene" path="res://scenes/environment/pressure_switch.tscn" id="12_pressure_switch"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="13_pause"]
+
+[sub_resource type="Environment" id="Environment_tutorial"]
+background_mode = 3
+glow_enabled = true
+glow_normalized = false
+glow_intensity = 0.8
+glow_strength = 1.1
+glow_bloom = 0.0
+glow_blend_mode = 1
+glow_hdr_threshold = 1.0
+glow_hdr_scale = 2.0
+glow_levels/1 = 0.8
+glow_levels/2 = 0.55
+glow_levels/3 = 0.25
+glow_levels/4 = 0.1
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundary_floor"]
+
+[sub_resource type="RectangleShape2D" id="Rectangle_wall"]
+size = Vector2(40, 720)
+
+[sub_resource type="RectangleShape2D" id="Rectangle_obstacle"]
+size = Vector2(72, 80)
+
+[sub_resource type="RectangleShape2D" id="Rectangle_gate"]
+size = Vector2(22, 720)
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_lesson"]
+bg_color = Color(0.025, 0.055, 0.075, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.29, 0.78, 0.86, 0.95)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.38)
+shadow_size = 7
+
+[node name="TutorialLevel" type="Node"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_tutorial")
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="Sky" type="Polygon2D" parent="Background"]
+z_index = -30
+color = Color(0.035, 0.075, 0.12, 1)
+polygon = PackedVector2Array(0, 0, 3840, 0, 3840, 720, 0, 720)
+
+[node name="FarHills" type="Polygon2D" parent="Background"]
+z_index = -29
+color = Color(0.08, 0.18, 0.24, 1)
+polygon = PackedVector2Array(0, 520, 330, 280, 680, 500, 1050, 250, 1430, 510, 1790, 300, 2180, 505, 2580, 240, 3000, 510, 3400, 290, 3840, 500, 3840, 720, 0, 720)
+
+[node name="NearHills" type="Polygon2D" parent="Background"]
+z_index = -28
+color = Color(0.055, 0.27, 0.29, 1)
+polygon = PackedVector2Array(0, 585, 440, 410, 820, 570, 1210, 380, 1610, 575, 2020, 420, 2400, 580, 2820, 390, 3240, 570, 3600, 420, 3840, 560, 3840, 720, 0, 720)
+
+[node name="RouteGlow" type="Polygon2D" parent="Background"]
+z_index = -27
+color = Color(0.07, 0.42, 0.35, 1)
+polygon = PackedVector2Array(0, 610, 3840, 610, 3840, 649, 0, 649)
+
+[node name="Ground" type="StaticBody2D" parent="Background"]
+position = Vector2(1920, 649)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/Ground"]
+shape = SubResource("WorldBoundary_floor")
+
+[node name="Visual" type="Polygon2D" parent="Background/Ground"]
+color = Color(0, 0.38, 0.28, 1)
+polygon = PackedVector2Array(-1920, 0, 1920, 0, 1920, 80, -1920, 80)
+
+[node name="GroundTrim" type="Polygon2D" parent="Background/Ground"]
+z_index = 1
+color = Color(0.28, 0.82, 0.57, 1)
+polygon = PackedVector2Array(-1920, 0, 1920, 0, 1920, 8, -1920, 8)
+
+[node name="LeftWall" type="StaticBody2D" parent="Background"]
+position = Vector2(20, 360)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/LeftWall"]
+shape = SubResource("Rectangle_wall")
+
+[node name="Visual" type="Polygon2D" parent="Background/LeftWall"]
+z_index = 2
+color = Color(0.07, 0.14, 0.18, 1)
+polygon = PackedVector2Array(-20, -360, 20, -360, 20, 360, -20, 360)
+
+[node name="RightWall" type="StaticBody2D" parent="Background"]
+position = Vector2(3820, 360)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/RightWall"]
+shape = SubResource("Rectangle_wall")
+
+[node name="Visual" type="Polygon2D" parent="Background/RightWall"]
+color = Color(0.07, 0.14, 0.18, 1)
+polygon = PackedVector2Array(-20, -360, 20, -360, 20, 360, -20, 360)
+
+[node name="WorldTimeAuthority" type="Node" parent="."]
+script = ExtResource("3_time")
+
+[node name="DelayBudgetManager" type="Node" parent="." groups=["delay_budget_manager"]]
+process_mode = 3
+script = ExtResource("4_budget")
+
+[node name="Actors" type="Node" parent="."]
+
+[node name="BodyGroup" parent="Actors" instance=ExtResource("1_group")]
+actor_scene = ExtResource("2_player")
+can_delay = true
+delay_time = 1.0
+snap_max_dist = 1.0
+
+[node name="Body" parent="Actors/BodyGroup" instance=ExtResource("2_player")]
+position = Vector2(160, 625)
+starting_weapon = 1
+
+[node name="PreviewBody" parent="Actors/BodyGroup" instance=ExtResource("2_player")]
+position = Vector2(160, 625)
+starting_weapon = 1
+
+[node name="Predictor" parent="Actors/BodyGroup" instance=ExtResource("2_player")]
+visible = false
+position = Vector2(160, 625)
+starting_weapon = 1
+
+[node name="TutorialCourse" type="Node2D" parent="."]
+
+[node name="JumpObstacle" type="StaticBody2D" parent="TutorialCourse"]
+position = Vector2(555, 609)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TutorialCourse/JumpObstacle"]
+shape = SubResource("Rectangle_obstacle")
+
+[node name="Visual" type="Polygon2D" parent="TutorialCourse/JumpObstacle"]
+polygon = PackedVector2Array(-36, -40, 36, -40, 36, 40, -36, 40)
+color = Color(0.20, 0.50, 0.52, 1)
+
+[node name="TopTrim" type="Polygon2D" parent="TutorialCourse/JumpObstacle"]
+z_index = 1
+polygon = PackedVector2Array(-36, -40, 36, -40, 36, -33, -36, -33)
+color = Color(0.51, 0.95, 0.78, 1)
+
+[node name="DropPlatform" parent="TutorialCourse" instance=ExtResource("6_platform")]
+position = Vector2(850, 561)
+scale = Vector2(1.2, 1)
+movement_enabled = false
+
+[node name="DirectionMark" parent="TutorialCourse/DropPlatform" index="3"]
+visible = false
+
+[node name="SwordDummy" parent="TutorialCourse" instance=ExtResource("8_dummy")]
+position = Vector2(1230, 649)
+attack_enabled = false
+max_health = 500.0
+
+[node name="BoomerangPickup" parent="TutorialCourse" instance=ExtResource("9_pickup")]
+position = Vector2(1590, 604)
+
+[node name="BoomerangTarget" parent="TutorialCourse" instance=ExtResource("8_dummy")]
+position = Vector2(1840, 649)
+attack_enabled = false
+max_health = 1.0
+
+[node name="StaffPickup" parent="TutorialCourse" instance=ExtResource("9_pickup")]
+position = Vector2(2200, 604)
+weapon_slot = 3
+
+[node name="StaffTarget" parent="TutorialCourse" instance=ExtResource("8_dummy")]
+position = Vector2(2460, 649)
+attack_enabled = false
+max_health = 1.0
+
+[node name="PressureSwitch" parent="TutorialCourse" groups=["tutorial_gate_switch"] instance=ExtResource("12_pressure_switch")]
+position = Vector2(2770, 649)
+
+[node name="LiftGate" parent="TutorialCourse" instance=ExtResource("7_lift_gate")]
+position = Vector2(3180, 269)
+pressure_switch_group = &"tutorial_gate_switch"
+gate_width = 64.0
+gate_height = 760.0
+open_offset = Vector2(0, -760)
+opening_speed = 760.0
+closing_speed = 900.0
+obstruction_escape_direction = -1
+reset_on_player_respawn = false
+
+[node name="Gates" type="Node2D" parent="TutorialCourse"]
+z_index = 2
+
+[node name="GateAfterDrop" type="StaticBody2D" parent="TutorialCourse/Gates"]
+position = Vector2(1040, 360)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TutorialCourse/Gates/GateAfterDrop"]
+shape = SubResource("Rectangle_gate")
+
+[node name="Visual" type="Polygon2D" parent="TutorialCourse/Gates/GateAfterDrop"]
+polygon = PackedVector2Array(-11, -360, 11, -360, 11, 360, -11, 360)
+color = Color(0.24, 0.84, 0.88, 0.74)
+
+[node name="GateLabel" type="Label" parent="TutorialCourse/Gates/GateAfterDrop"]
+offset_left = -92.0
+offset_top = -85.0
+offset_right = 92.0
+offset_bottom = -55.0
+theme_override_colors/font_color = Color(0.85, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.08, 0.1, 1)
+theme_override_constants/outline_size = 4
+text = "完成当前教学后开启"
+horizontal_alignment = 1
+
+[node name="GateAfterSword" type="StaticBody2D" parent="TutorialCourse/Gates"]
+position = Vector2(1450, 360)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TutorialCourse/Gates/GateAfterSword"]
+shape = SubResource("Rectangle_gate")
+
+[node name="Visual" type="Polygon2D" parent="TutorialCourse/Gates/GateAfterSword"]
+polygon = PackedVector2Array(-11, -360, 11, -360, 11, 360, -11, 360)
+color = Color(0.24, 0.84, 0.88, 0.74)
+
+[node name="GateLabel" type="Label" parent="TutorialCourse/Gates/GateAfterSword"]
+offset_left = -92.0
+offset_top = -85.0
+offset_right = 92.0
+offset_bottom = -55.0
+theme_override_colors/font_color = Color(0.85, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.08, 0.1, 1)
+theme_override_constants/outline_size = 4
+text = "完成连续普攻与蓄力攻击后开启"
+horizontal_alignment = 1
+
+[node name="GateAfterBoomerang" type="StaticBody2D" parent="TutorialCourse/Gates"]
+position = Vector2(2050, 360)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TutorialCourse/Gates/GateAfterBoomerang"]
+shape = SubResource("Rectangle_gate")
+
+[node name="Visual" type="Polygon2D" parent="TutorialCourse/Gates/GateAfterBoomerang"]
+polygon = PackedVector2Array(-11, -360, 11, -360, 11, 360, -11, 360)
+color = Color(0.96, 0.58, 0.22, 0.75)
+
+[node name="GateLabel" type="Label" parent="TutorialCourse/Gates/GateAfterBoomerang"]
+offset_left = -92.0
+offset_top = -85.0
+offset_right = 92.0
+offset_bottom = -55.0
+theme_override_colors/font_color = Color(1, 0.88, 0.65, 1)
+theme_override_colors/font_outline_color = Color(0.1, 0.05, 0.02, 1)
+theme_override_constants/outline_size = 4
+text = "命中远处目标后开启"
+horizontal_alignment = 1
+
+[node name="GateAfterStaff" type="StaticBody2D" parent="TutorialCourse/Gates"]
+position = Vector2(2650, 360)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TutorialCourse/Gates/GateAfterStaff"]
+shape = SubResource("Rectangle_gate")
+
+[node name="Visual" type="Polygon2D" parent="TutorialCourse/Gates/GateAfterStaff"]
+polygon = PackedVector2Array(-11, -360, 11, -360, 11, 360, -11, 360)
+color = Color(0.58, 0.45, 1, 0.75)
+
+[node name="GateLabel" type="Label" parent="TutorialCourse/Gates/GateAfterStaff"]
+offset_left = -92.0
+offset_top = -85.0
+offset_right = 92.0
+offset_bottom = -55.0
+theme_override_colors/font_color = Color(0.9, 0.85, 1, 1)
+theme_override_colors/font_outline_color = Color(0.06, 0.03, 0.12, 1)
+theme_override_constants/outline_size = 4
+text = "命中法术目标后开启"
+horizontal_alignment = 1
+
+[node name="FinishMarker" type="Node2D" parent="TutorialCourse"]
+position = Vector2(3580, 649)
+
+[node name="LeftPost" type="Polygon2D" parent="TutorialCourse/FinishMarker"]
+polygon = PackedVector2Array(-72, 0, -58, 0, -58, -150, -72, -150)
+color = Color(0.38, 1.8, 1.45, 1)
+
+[node name="RightPost" type="Polygon2D" parent="TutorialCourse/FinishMarker"]
+polygon = PackedVector2Array(58, 0, 72, 0, 72, -150, 58, -150)
+color = Color(0.38, 1.8, 1.45, 1)
+
+[node name="Top" type="Polygon2D" parent="TutorialCourse/FinishMarker"]
+polygon = PackedVector2Array(-72, -150, 72, -150, 72, -136, -72, -136)
+color = Color(0.38, 1.8, 1.45, 1)
+
+[node name="Label" type="Label" parent="TutorialCourse/FinishMarker"]
+offset_left = -100.0
+offset_top = -205.0
+offset_right = 100.0
+offset_bottom = -165.0
+theme_override_colors/font_color = Color(0.7, 1, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.08, 0.06, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 22
+text = "教学出口"
+horizontal_alignment = 1
+
+[node name="Projectiles" type="Node2D" parent="." groups=["hostile_projectile_container", "player_projectile_container"]]
+
+[node name="SideScrollCamera" type="Camera2D" parent="."]
+position = Vector2(640, 360)
+process_callback = 0
+limit_left = 0
+limit_top = 0
+limit_right = 3840
+limit_bottom = 720
+script = ExtResource("5_camera")
+target_path = NodePath("../Actors/BodyGroup/Body")
+
+[node name="TutorialController" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("10_tutorial")
+
+[node name="TutorialUI" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 10
+
+[node name="PlayerStatsPanel" parent="TutorialUI" instance=ExtResource("11_stats_panel")]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 296.0
+offset_bottom = 221.0
+player_group_path = NodePath("../../Actors/BodyGroup")
+
+[node name="LessonPanel" type="PanelContainer" parent="TutorialUI"]
+anchors_preset = 10
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -320.0
+offset_top = 16.0
+offset_right = 320.0
+offset_bottom = 210.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBox_lesson")
+
+[node name="Margin" type="MarginContainer" parent="TutorialUI/LessonPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 12
+
+[node name="VBox" type="VBoxContainer" parent="TutorialUI/LessonPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="LessonTitle" type="Label" parent="TutorialUI/LessonPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.53, 0.93, 1, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.06, 0.08, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 22
+text = "教学 1 / 17 · 移动"
+horizontal_alignment = 1
+
+[node name="LessonHint" type="Label" parent="TutorialUI/LessonPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 104)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.97, 1, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.04, 0.06, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 18
+text = "按 A / D 向右移动，走到前方路标。"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="CompletionBackdrop" type="ColorRect" parent="TutorialUI"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0.01, 0.03, 0.04, 0.72)
+
+[node name="Title" type="Label" parent="TutorialUI/CompletionBackdrop"]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -80.0
+offset_right = 300.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.55, 1, 0.75, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.07, 0.05, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/font_size = 42
+text = "教学完成"
+horizontal_alignment = 1
+
+[node name="Hint" type="Label" parent="TutorialUI/CompletionBackdrop"]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = 0.0
+offset_right = 300.0
+offset_bottom = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 0.96, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.05, 0.06, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+text = "你已经掌握基础操作与延迟控制"
+horizontal_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="TutorialUI/CompletionBackdrop"]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -130.0
+offset_top = 62.0
+offset_right = 130.0
+offset_bottom = 116.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 20
+text = "进入正式关卡（Enter）"
+
+[node name="PauseMenu" parent="." instance=ExtResource("13_pause")]
+
+[editable path="Actors/BodyGroup"]
+[editable path="TutorialCourse/DropPlatform"]

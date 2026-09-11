@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/environment/delayable_lift_gate_actor.tscn" id="1_actor"]
+[ext_resource type="Script" path="res://scenes/environment/lift_gate_delay_controller.gd" id="2_controller"]
+
+[node name="DelayableLiftGate" instance=ExtResource("1_actor")]
+
+[node name="LiftGateDelayController" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("2_controller")
+preview_scene = ExtResource("1_actor")

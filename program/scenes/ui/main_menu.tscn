@@ -1,0 +1,289 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/main_menu.gd" id="1_menu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_panel"]
+bg_color = Color(0.025, 0.055, 0.075, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.75, 0.78, 0.92)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_button"]
+bg_color = Color(0.08, 0.19, 0.23, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.22, 0.55, 0.6, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_button_hover"]
+bg_color = Color(0.12, 0.42, 0.42, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.43, 0.95, 0.81, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_button_pressed"]
+bg_color = Color(0.06, 0.28, 0.3, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 1, 0.82, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_focus"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72, 1, 0.88, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.025, 0.07, 0.1, 1)
+
+[node name="Horizon" type="Polygon2D" parent="Background"]
+position = Vector2(640, 360)
+color = Color(0.04, 0.24, 0.25, 1)
+polygon = PackedVector2Array(-800, 280, -800, 100, -520, -30, -260, 130, 20, -90, 300, 105, 580, -45, 800, 80, 800, 280)
+
+[node name="GlowLine" type="ColorRect" parent="Background"]
+layout_mode = 0
+anchor_top = 0.72
+anchor_right = 1.0
+anchor_bottom = 0.72
+offset_top = -2.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.18, 0.72, 0.58, 0.55)
+
+[node name="TitleBlock" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_top = 72.0
+offset_right = 400.0
+offset_bottom = 185.0
+grow_horizontal = 2
+theme_override_constants/separation = 4
+
+[node name="Title" type="Label" parent="TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.58, 1, 0.83, 1)
+theme_override_colors/font_outline_color = Color(0.01, 0.04, 0.06, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 52
+text = "时滞回响"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="TitleBlock"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.68, 0.82, 0.86, 1)
+theme_override_colors/font_outline_color = Color(0.01, 0.04, 0.06, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+text = "掌控延迟 · 改写行动的时序"
+horizontal_alignment = 1
+
+[node name="MainPanel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(380, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -84.0
+offset_right = 190.0
+offset_bottom = 216.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_panel")
+
+[node name="Margin" type="MarginContainer" parent="MainPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 34
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 34
+theme_override_constants/margin_bottom = 28
+
+[node name="VBox" type="VBoxContainer" parent="MainPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="MenuTitle" type="Label" parent="MainPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.83, 0.95, 0.96, 1)
+theme_override_font_sizes/font_size = 24
+text = "主菜单"
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="MainPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+theme_override_styles/normal = SubResource("StyleBox_button")
+theme_override_styles/hover = SubResource("StyleBox_button_hover")
+theme_override_styles/pressed = SubResource("StyleBox_button_pressed")
+theme_override_styles/focus = SubResource("StyleBox_focus")
+text = "开始游戏"
+
+[node name="SettingsButton" type="Button" parent="MainPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+theme_override_styles/normal = SubResource("StyleBox_button")
+theme_override_styles/hover = SubResource("StyleBox_button_hover")
+theme_override_styles/pressed = SubResource("StyleBox_button_pressed")
+theme_override_styles/focus = SubResource("StyleBox_focus")
+text = "设置"
+
+[node name="QuitButton" type="Button" parent="MainPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+theme_override_styles/normal = SubResource("StyleBox_button")
+theme_override_styles/hover = SubResource("StyleBox_button_hover")
+theme_override_styles/pressed = SubResource("StyleBox_button_pressed")
+theme_override_styles/focus = SubResource("StyleBox_focus")
+text = "结束游戏"
+
+[node name="SettingsPanel" type="PanelContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(430, 330)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -215.0
+offset_top = -99.0
+offset_right = 215.0
+offset_bottom = 231.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_panel")
+
+[node name="Margin" type="MarginContainer" parent="SettingsPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 36
+theme_override_constants/margin_bottom = 28
+
+[node name="VBox" type="VBoxContainer" parent="SettingsPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="SettingsTitle" type="Label" parent="SettingsPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.58, 1, 0.83, 1)
+theme_override_font_sizes/font_size = 28
+text = "设置"
+horizontal_alignment = 1
+
+[node name="VolumeHeader" type="HBoxContainer" parent="SettingsPanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="VolumeLabel" type="Label" parent="SettingsPanel/Margin/VBox/VolumeHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+text = "主音量"
+
+[node name="VolumeValue" type="Label" parent="SettingsPanel/Margin/VBox/VolumeHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.58, 1, 0.83, 1)
+theme_override_font_sizes/font_size = 18
+text = "80%"
+
+[node name="VolumeSlider" type="HSlider" parent="SettingsPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+max_value = 100.0
+step = 1.0
+value = 80.0
+
+[node name="FullscreenToggle" type="CheckButton" parent="SettingsPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "全屏显示"
+
+[node name="SettingsHint" type="Label" parent="SettingsPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.72, 0.76, 1)
+theme_override_font_sizes/font_size = 14
+text = "设置会自动保存"
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="SettingsPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBox_button")
+theme_override_styles/hover = SubResource("StyleBox_button_hover")
+theme_override_styles/pressed = SubResource("StyleBox_button_pressed")
+theme_override_styles/focus = SubResource("StyleBox_focus")
+text = "返回"
+
+[node name="Footer" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -54.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.48, 0.65, 0.68, 1)
+theme_override_font_sizes/font_size = 15
+text = "开始游戏将先进入教学关卡 · ESC 返回"
+horizontal_alignment = 1

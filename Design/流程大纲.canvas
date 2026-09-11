@@ -1,0 +1,26 @@
+{
+	"nodes":[
+		{"id":"title","type":"text","text":"# 玩家延迟：输入—预览—回放\n最终实现的数据流","x":60,"y":40,"width":360,"height":80,"color":"4"},
+		{"id":"act","type":"text","text":"**Recording 记录内容**\n输入、位置、速度、朝向\n状态机与精灵表现快照\n供回放、切片和分歧检测共用","x":580,"y":407,"width":320,"height":153},
+		{"id":"samp","type":"text","text":"**按延迟消费**\n读头按目标秒数换算帧数\n延迟改变时移动读头\n缩短延迟会跳过部分未来","x":960,"y":182,"width":220,"height":153,"color":"5"},
+		{"id":"buf","type":"text","text":"**DelayTimelineBuffer**\n固定容量环形缓冲\n写头记录预览结果\n读头定位本体应执行的帧","x":600,"y":194,"width":260,"height":125,"color":"5"},
+		{"id":"ghost","type":"text","text":"**Body 权威本体**\n取得延迟前的命令帧并重放\n碰撞、伤害与结算只认本体\n回放后核对记录结果","x":1260,"y":206,"width":320,"height":125,"color":"5"},
+		{"id":"vis","type":"text","text":"**玩家可见反馈**\n橙色本体 = 实际结果\n蓝色预览体 = 即时输入结果\n时间切片展示两者之间的历史","x":1660,"y":196,"width":280,"height":125,"color":"5"},
+		{"id":"prev","type":"text","text":"**Predictor 预测器**\n思考时间内隐藏模拟目标延迟\n生成蓝色预测与临时时间切片\n提交后复用同一次预测结果","x":1520,"y":421,"width":240,"height":150},
+		{"id":"delayc","type":"text","text":"**延迟设置与资源**\n自然延迟默认为 1 秒\n修改受时滞能量与延迟负载限制\n负延迟仅用于动作级加速","x":1120,"y":428,"width":280,"height":125},
+		{"id":"det","type":"text","text":"**统一逻辑基准**\n缓冲、预测与回放统一按 100 Hz\n世界慢动作不改变逻辑时间换算\n避免不同系统的帧数口径漂移","x":180,"y":407,"width":300,"height":139},
+		{"id":"rec","type":"text","text":"**PreviewBody 即时预览**\n延迟大于 0 时直接接收玩家输入\nPreviewSystem 记录命令与执行结果\n预览体本身不参与碰撞和伤害","x":140,"y":210,"width":360,"height":130,"color":"5"},
+		{"id":"p_src","type":"text","text":"**玩家输入源**\n移动、跳跃、攻击、蓄力与切换武器\nAttackInputBuffer 选择当前输入载体\n0 延迟时直接交给权威本体","x":-240,"y":213,"width":300,"height":130,"color":"5"}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"p_src","fromSide":"right","toNode":"rec","toSide":"left"},
+		{"id":"e2","fromNode":"rec","fromSide":"right","toNode":"buf","toSide":"left"},
+		{"id":"e3","fromNode":"buf","fromSide":"right","toNode":"samp","toSide":"left"},
+		{"id":"e4","fromNode":"samp","fromSide":"right","toNode":"ghost","toSide":"left"},
+		{"id":"e5","fromNode":"ghost","fromSide":"right","toNode":"vis","toSide":"left"},
+		{"id":"e6","fromNode":"delayc","fromSide":"top","toNode":"ghost","toSide":"bottom"},
+		{"id":"e7","fromNode":"det","fromSide":"top","toNode":"rec","toSide":"bottom"},
+		{"id":"e8","fromNode":"act","fromSide":"top","toNode":"buf","toSide":"bottom"},
+		{"id":"e9","fromNode":"prev","fromSide":"top","toNode":"vis","toSide":"bottom"}
+	]
+}

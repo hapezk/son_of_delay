@@ -1,0 +1,227 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/pause_menu.gd" id="1_pause"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_panel"]
+bg_color = Color(0.025, 0.055, 0.075, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.31, 0.82, 0.78, 0.95)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_button"]
+bg_color = Color(0.075, 0.17, 0.21, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.48, 0.54, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_button_hover"]
+bg_color = Color(0.12, 0.39, 0.39, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.48, 1, 0.83, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_button_pressed"]
+bg_color = Color(0.055, 0.26, 0.28, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.58, 1, 0.86, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_focus"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.78, 1, 0.9, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[node name="PauseMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 100
+script = ExtResource("1_pause")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.005, 0.015, 0.025, 0.78)
+
+[node name="Center" type="CenterContainer" parent="Backdrop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainPanel" type="PanelContainer" parent="Backdrop/Center"]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBox_panel")
+
+[node name="Margin" type="MarginContainer" parent="Backdrop/Center/MainPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 28
+
+[node name="VBox" type="VBoxContainer" parent="Backdrop/Center/MainPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 13
+
+[node name="Title" type="Label" parent="Backdrop/Center/MainPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.58, 1, 0.83, 1)
+theme_override_colors/font_outline_color = Color(0.01, 0.04, 0.05, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 34
+text = "游戏暂停"
+horizontal_alignment = 1
+
+[node name="Hint" type="Label" parent="Backdrop/Center/MainPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63, 0.76, 0.8, 1)
+theme_override_font_sizes/font_size = 15
+text = "按 ESC 继续游戏"
+horizontal_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="Backdrop/Center/MainPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 49)
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBox_button")
+theme_override_styles/hover = SubResource("StyleBox_button_hover")
+theme_override_styles/pressed = SubResource("StyleBox_button_pressed")
+theme_override_styles/focus = SubResource("StyleBox_focus")
+text = "继续游戏"
+
+[node name="RestartButton" type="Button" parent="Backdrop/Center/MainPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 49)
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBox_button")
+theme_override_styles/hover = SubResource("StyleBox_button_hover")
+theme_override_styles/pressed = SubResource("StyleBox_button_pressed")
+theme_override_styles/focus = SubResource("StyleBox_focus")
+text = "重新开始关卡"
+
+[node name="SettingsButton" type="Button" parent="Backdrop/Center/MainPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 49)
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBox_button")
+theme_override_styles/hover = SubResource("StyleBox_button_hover")
+theme_override_styles/pressed = SubResource("StyleBox_button_pressed")
+theme_override_styles/focus = SubResource("StyleBox_focus")
+text = "设置"
+
+[node name="MainMenuButton" type="Button" parent="Backdrop/Center/MainPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 49)
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBox_button")
+theme_override_styles/hover = SubResource("StyleBox_button_hover")
+theme_override_styles/pressed = SubResource("StyleBox_button_pressed")
+theme_override_styles/focus = SubResource("StyleBox_focus")
+text = "返回主菜单"
+
+[node name="SettingsPanel" type="PanelContainer" parent="Backdrop/Center"]
+visible = false
+custom_minimum_size = Vector2(430, 330)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBox_panel")
+
+[node name="Margin" type="MarginContainer" parent="Backdrop/Center/SettingsPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 28
+
+[node name="VBox" type="VBoxContainer" parent="Backdrop/Center/SettingsPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Backdrop/Center/SettingsPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.58, 1, 0.83, 1)
+theme_override_font_sizes/font_size = 28
+text = "设置"
+horizontal_alignment = 1
+
+[node name="VolumeHeader" type="HBoxContainer" parent="Backdrop/Center/SettingsPanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="VolumeLabel" type="Label" parent="Backdrop/Center/SettingsPanel/Margin/VBox/VolumeHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+text = "主音量"
+
+[node name="VolumeValue" type="Label" parent="Backdrop/Center/SettingsPanel/Margin/VBox/VolumeHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.58, 1, 0.83, 1)
+theme_override_font_sizes/font_size = 18
+text = "80%"
+
+[node name="VolumeSlider" type="HSlider" parent="Backdrop/Center/SettingsPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+max_value = 100.0
+step = 1.0
+value = 80.0
+
+[node name="FullscreenToggle" type="CheckButton" parent="Backdrop/Center/SettingsPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "全屏显示"
+
+[node name="Hint" type="Label" parent="Backdrop/Center/SettingsPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.72, 0.76, 1)
+theme_override_font_sizes/font_size = 14
+text = "设置会自动保存"
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="Backdrop/Center/SettingsPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBox_button")
+theme_override_styles/hover = SubResource("StyleBox_button_hover")
+theme_override_styles/pressed = SubResource("StyleBox_button_pressed")
+theme_override_styles/focus = SubResource("StyleBox_focus")
+text = "返回暂停菜单"

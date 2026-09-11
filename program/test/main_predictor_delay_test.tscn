@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://xhgmrqpyaqnp"]
+
+[ext_resource type="PackedScene" uid="uid://c3gwa0uouysbp" path="res://scenes/actors/player.tscn" id="1_player"]
+[ext_resource type="Script" uid="uid://deefmx5nslcll" path="res://scenes/components/world_time_authority.gd" id="2_time"]
+[ext_resource type="PackedScene" path="res://scenes/components/delay_control_ui.tscn" id="3_delay_ui"]
+[ext_resource type="Script" uid="uid://hu4gce176bt2" path="res://scenes/actors/delayed_actor_group.gd" id="4_group"]
+[ext_resource type="Script" uid="uid://cway8k86kpjlu" path="res://scenes/components/preview_system.gd" id="5_preview"]
+[ext_resource type="Script" uid="uid://3g2kkb4g6vj3" path="res://scenes/components/time_slice_system.gd" id="6_slices"]
+[ext_resource type="PackedScene" path="res://scenes/components/player_stats_panel.tscn" id="7_stats_panel"]
+[ext_resource type="Script" path="res://scenes/components/delay_budget_manager.gd" id="8_delay_budget"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_wvhbo"]
+
+[node name="Main" type="Node" unique_id=1747896296]
+
+[node name="WorldTimeAuthority" type="Node" parent="." unique_id=1325126076]
+script = ExtResource("2_time")
+
+[node name="DelayBudgetManager" type="Node" parent="." groups=["delay_budget_manager"]]
+process_mode = 3
+script = ExtResource("8_delay_budget")
+
+[node name="Platform01" type="StaticBody2D" parent="." unique_id=236952646]
+position = Vector2(574, 592)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform01" unique_id=93796837]
+shape = SubResource("WorldBoundaryShape2D_wvhbo")
+
+[node name="ColorRect" type="ColorRect" parent="Platform01" unique_id=1492089520]
+custom_minimum_size = Vector2(1200, 100)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -600.0
+offset_right = 600.0
+offset_bottom = 40.0
+grow_horizontal = 2
+color = Color(0, 0.4392157, 0.3019608, 1)
+
+[node name="Actors" type="Node" parent="." unique_id=1239475906]
+
+[node name="PlayerGroup" type="Node" parent="Actors" unique_id=683183184]
+script = ExtResource("4_group")
+actor_scene = ExtResource("1_player")
+can_delay = true
+snap_max_dist = 1.0
+
+[node name="PreviewSystem" type="Node" parent="Actors/PlayerGroup" unique_id=2129305478]
+script = ExtResource("5_preview")
+
+[node name="TimeSliceSystem" type="Node" parent="Actors/PlayerGroup" unique_id=1741608521]
+script = ExtResource("6_slices")
+
+[node name="SlicePool" type="Node" parent="Actors/PlayerGroup/TimeSliceSystem" unique_id=1853526834]
+
+[node name="Body" parent="Actors/PlayerGroup" unique_id=944712674 instance=ExtResource("1_player")]
+
+[node name="DelayControlUi" parent="Actors/PlayerGroup/Body" unique_id=2116055888 instance=ExtResource("3_delay_ui")]
+step_reset_interval = 0.3
+
+[node name="PreviewBody" parent="Actors/PlayerGroup" unique_id=628573248 instance=ExtResource("1_player")]
+
+[node name="Predictor" parent="Actors/PlayerGroup" unique_id=922830264 instance=ExtResource("1_player")]
+visible = false
+
+[node name="TestHud" type="CanvasLayer" parent="."]
+
+[node name="PlayerStatsPanel" parent="TestHud" instance=ExtResource("7_stats_panel")]
+player_group_path = NodePath("../../Actors/PlayerGroup")

@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dkh6x6q5bs6q5"]
+
+[ext_resource type="Script" uid="uid://y1xx6t6pxpwx" path="res://scenes/combat/boomerang/boomerang_launcher.gd" id="1_launcher"]
+[ext_resource type="PackedScene" uid="uid://c8u0s2t8h1xxm" path="res://scenes/combat/boomerang/delayable_boomerang.tscn" id="2_boomerang"]
+
+[node name="BoomerangLauncher" type="Node2D" unique_id=745115129]
+position = Vector2(0, -10)
+script = ExtResource("1_launcher")
+projectile_scene = ExtResource("2_boomerang")
+active_projectile_group = &"player_boomerangs"

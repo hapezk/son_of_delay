@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="DelayAdjustmentTuning" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/delay_adjustment_tuning.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+step_seconds = 0.01
+rapid_scroll_interval = 0.1
+step_reset_interval = 0.2
+snap_after_steps = 6

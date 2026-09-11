@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://b1wbwt0vghwiu"]
+
+[ext_resource type="Script" uid="uid://hu4gce176bt2" path="res://scenes/actors/delayed_actor_group.gd" id="1_ntnag"]
+[ext_resource type="Script" uid="uid://cway8k86kpjlu" path="res://scenes/components/preview_system.gd" id="2_hjxhx"]
+[ext_resource type="Script" uid="uid://3g2kkb4g6vj3" path="res://scenes/components/time_slice_system.gd" id="3_time"]
+
+[node name="DelayedActorGroup" type="Node" unique_id=492839581]
+script = ExtResource("1_ntnag")
+natural_delay_time = 1.0
+delay_time = 1.0
+
+[node name="PreviewSystem" type="Node" parent="." unique_id=1592842973]
+script = ExtResource("2_hjxhx")
+
+[node name="TimeSliceSystem" type="Node" parent="." unique_id=1752458250]
+script = ExtResource("3_time")
+
+[node name="SlicePool" type="Node" parent="TimeSliceSystem" unique_id=1562694679]

@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://c3gwa0uouysbp"]
+
+[ext_resource type="PackedScene" uid="uid://waa4d8cbn0si" path="res://scenes/actors/base_actor.tscn" id="1_15tap"]
+[ext_resource type="Script" uid="uid://c8damn3xahf2j" path="res://scenes/actors/player.gd" id="2_ru62r"]
+[ext_resource type="PackedScene" path="res://scenes/combat/sword/sword_weapon.tscn" id="3_sword"]
+[ext_resource type="PackedScene" path="res://scenes/combat/boomerang/boomerang_launcher.tscn" id="4_boomerang_launcher"]
+[ext_resource type="PackedScene" path="res://scenes/combat/staff/straight_shot_launcher.tscn" id="5_straight_launcher"]
+
+[sub_resource type="Gradient" id="Gradient_ru62r"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ru62r"]
+gradient = SubResource("Gradient_ru62r")
+width = 48
+height = 48
+
+[sub_resource type="Shader" id="Shader_hurt_white"]
+code = "shader_type canvas_item;\n\nuniform float white_amount : hint_range(0.0, 1.0) = 0.0;\n\nvoid fragment() {\n\tvec4 source = texture(TEXTURE, UV) * COLOR;\n\tsource.rgb = mix(source.rgb, vec3(1.0), white_amount * source.a);\n\tCOLOR = source;\n}\n"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hurt_white"]
+resource_local_to_scene = true
+shader = SubResource("Shader_hurt_white")
+shader_parameter/white_amount = 0.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ktjr4"]
+size = Vector2(48, 48)
+
+[node name="Player" unique_id=1678858962 instance=ExtResource("1_15tap")]
+z_index = 20
+collision_layer = 1
+script = ExtResource("2_ru62r")
+
+[node name="Sprite2D" parent="VisualRoot/Graphics" parent_id_path=PackedInt32Array(405451638) index="0" unique_id=727615874]
+material = SubResource("ShaderMaterial_hurt_white")
+texture = SubResource("GradientTexture2D_ru62r")
+
+[node name="BaseCollision" parent="." index="2" unique_id=1826051096]
+shape = SubResource("RectangleShape2D_ktjr4")
+
+[node name="SwordWeapon" parent="VisualRoot" instance=ExtResource("3_sword")]
+
+[node name="BoomerangLauncher" parent="." instance=ExtResource("4_boomerang_launcher")]
+
+[node name="StraightShotLauncher" parent="." instance=ExtResource("5_straight_launcher")]
+
+[node name="HealthBar" type="Node2D" parent="."]
+position = Vector2(-26, -44)
+
+[node name="Background" type="ColorRect" parent="HealthBar"]
+offset_right = 52.0
+offset_bottom = 7.0
+mouse_filter = 2
+color = Color(0.08, 0.09, 0.1, 0.9)
+
+[node name="Fill" type="ColorRect" parent="HealthBar"]
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 51.0
+offset_bottom = 6.0
+mouse_filter = 2
+color = Color(0.427451, 0.878431, 0.435294, 1)

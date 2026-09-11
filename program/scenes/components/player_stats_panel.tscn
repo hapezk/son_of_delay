@@ -1,0 +1,143 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scenes/components/player_stats_panel.gd" id="1_stats"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_panel"]
+bg_color = Color(0.025, 0.055, 0.075, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.27, 0.58, 0.69, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.32)
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_health_background"]
+bg_color = Color(0.06, 0.09, 0.1, 0.95)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_health_fill"]
+bg_color = Color(0.31, 0.82, 0.43, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_budget_background"]
+bg_color = Color(0.06, 0.09, 0.1, 0.95)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_budget_fill"]
+bg_color = Color(0.24, 0.67, 0.9, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_energy_fill"]
+bg_color = Color(0.56, 0.38, 0.96, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="PlayerStatsPanel" type="PanelContainer" groups=["player_stats_panel"]]
+process_mode = 3
+offset_left = 20.0
+offset_top = 16.0
+offset_right = 300.0
+offset_bottom = 221.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBox_panel")
+script = ExtResource("1_stats")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 11
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 11
+
+[node name="VBox" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Title" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.88, 1, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.06, 0.08, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 18
+text = "玩家属性"
+
+[node name="Separator" type="HSeparator" parent="Margin/VBox"]
+layout_mode = 2
+
+[node name="HealthLabel" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.02, 0.05, 0.06, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 16
+text = "生命  100 / 100"
+
+[node name="HealthBar" type="ProgressBar" parent="Margin/VBox"]
+custom_minimum_size = Vector2(0, 11)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBox_health_background")
+theme_override_styles/fill = SubResource("StyleBox_health_fill")
+value = 100.0
+show_percentage = false
+
+[node name="PlayerDelayLabel" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.94, 0.95, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.05, 0.06, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 15
+text = "玩家延迟  1.00s / 自然延迟 1.00s"
+
+[node name="DelayBudgetLabel" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.88, 1, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.05, 0.06, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 15
+text = "延迟负载  0.00 / 1.00s"
+
+[node name="DelayBudgetBar" type="ProgressBar" parent="Margin/VBox"]
+custom_minimum_size = Vector2(0, 11)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBox_budget_background")
+theme_override_styles/fill = SubResource("StyleBox_budget_fill")
+max_value = 1.0
+show_percentage = false
+
+[node name="DelayEnergyLabel" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.78, 0.68, 1, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.05, 0.06, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 15
+text = "时滞能量  1.00 / 1.00"
+
+[node name="DelayEnergyBar" type="ProgressBar" parent="Margin/VBox"]
+custom_minimum_size = Vector2(0, 11)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBox_budget_background")
+theme_override_styles/fill = SubResource("StyleBox_energy_fill")
+max_value = 1.0
+value = 1.0
+show_percentage = false

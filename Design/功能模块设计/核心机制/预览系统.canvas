@@ -1,0 +1,33 @@
+{
+	"nodes":[
+		{"id":"0137c663a6bdf64e","type":"group","x":-400,"y":-1240,"width":599,"height":632,"color":"4","label":"节点分布"},
+		{"id":"5fd12843752d071b","type":"text","text":"玩家输入\n移动、跳跃、攻击、蓄力","x":-160,"y":-520,"width":250,"height":75},
+		{"id":"170b9cc1e4b552f7","type":"text","text":"AttackInputBuffer 选择输入载体\n并把按键转换为统一命令","x":-183,"y":-396,"width":296,"height":75},
+		{"id":"ed3617129a0fb51c","type":"text","text":"有正延迟时，命令先由 PreviewBody 即时执行。\nPreviewSystem 每个逻辑帧把命令和执行结果写入环形缓冲。\nRecording 包含输入、位置、速度、朝向、状态机和精灵快照。\n蓝色预览体只负责反馈，不参与真实碰撞、伤害或结算。","x":-382,"y":-261,"width":398,"height":181},
+		{"id":"89b37ef8c18fd6d9","type":"text","text":"延迟为 0 时\n输入直接交给 Body 权威本体","x":60,"y":-260,"width":250,"height":75},
+		{"id":"c949532e564bf292","type":"text","text":"Body 按读头取得过去的命令帧并执行。\n执行后将位置、速度与当时记录的预览结果核对；\n超过容差时触发【预测分歧闪回】。","x":-367,"y":0,"width":368,"height":120},
+		{"id":"9fd5e818e294a78c","type":"text","text":"## 最终实现\n\n玩家的默认自然延迟为 1 秒。为了避免按键后完全没有反馈，场景中同时维护三份角色：\n\n- **Body**：权威本体。碰撞、伤害、拾取与胜负结算只认它。\n- **PreviewBody**：蓝色即时预览体。正延迟存在时先响应输入，并把命令与结果写入 PreviewSystem。\n- **Predictor**：隐藏预测器。进入思考时间并修改目标延迟时，从本体快照出发模拟新时间线。\n\nDelayControllerBase 管理三体生命周期、延迟 UI 和公共资源接口；玩家由 DelayedActorGroup 适配，敌人与机关使用 CommandReplayDelayController 的命令回放流程。\n\n缓冲按固定 100 Hz 逻辑基准工作。延迟秒数被换算为读写头间距；增加延迟会等待更多未来命令，减少延迟则跳过一部分尚未执行的历史。\n\n思考时间由 WorldTimeAuthority 统一暂停世界。所有对象先生成预测，DelayBudgetManager 再按照时滞能量和延迟负载结算，最后同时提交。\n\n这套预览缓解了等待感，但没有消除自身延迟对操控的负反馈。实际试玩中，把玩家延迟降到 0 往往仍是最直接、最舒适的选择。","x":-1265,"y":-1260,"width":747,"height":652,"color":"6"},
+		{"id":"9c37484e3e56624e","type":"text","text":"预测分歧闪回：\n真实碰撞或受伤使回放结果\n与预览记录不一致时，\n清空已经不可信的未来；\n蓝色预览体在慢动作中追回本体，\n随后尝试恢复原延迟设置。\n伤害等真实结果不会被撤销。","x":-660,"y":-45,"width":250,"height":211,"color":"3"},
+		{"id":"69fc04c1bf8c42e0","type":"text","text":"DelayControllerBase\n三体公共生命周期","x":-380,"y":-1220,"width":190,"height":80},
+		{"id":"2a0bb88617c6a2e9","type":"text","text":"PreviewSystem\n记录与预测轨迹","x":-178,"y":-1220,"width":165,"height":80},
+		{"id":"882b3f5241d0ffe1","type":"text","text":"DelayCommandBuffer\n命令环形缓冲","x":34,"y":-1220,"width":190,"height":80},
+		{"id":"294a20c88230c843","type":"text","text":"PredictionRunner\n离线逐帧模拟","x":34,"y":-1084,"width":175,"height":80},
+		{"id":"e1f95f470742570a","x":-178,"y":-1068,"width":145,"height":60,"type":"text","text":"预览体"},
+		{"id":"30081aa46bf42261","type":"text","text":"本体","x":-178,"y":-934,"width":145,"height":60},
+		{"id":"87411ab7aed1ed2b","type":"text","text":"时间切片\n历史与预测可视化","x":-178,"y":-820,"width":175,"height":80}
+	],
+	"edges":[
+		{"id":"fdbcc6df1dac6168","fromNode":"882b3f5241d0ffe1","fromSide":"left","toNode":"2a0bb88617c6a2e9","toSide":"right"},
+		{"id":"a3773bfbc1d536a8","fromNode":"294a20c88230c843","fromSide":"left","toNode":"2a0bb88617c6a2e9","toSide":"right"},
+		{"id":"eb181b4460a83eab","fromNode":"2a0bb88617c6a2e9","fromSide":"left","toNode":"69fc04c1bf8c42e0","toSide":"right"},
+		{"id":"4793546d4e00f7ca","fromNode":"5fd12843752d071b","fromSide":"bottom","toNode":"170b9cc1e4b552f7","toSide":"top"},
+		{"id":"6fa84f1fe742abae","fromNode":"170b9cc1e4b552f7","fromSide":"bottom","toNode":"ed3617129a0fb51c","toSide":"top","label":"有延迟"},
+		{"id":"d6d091497d072f6a","fromNode":"170b9cc1e4b552f7","fromSide":"bottom","toNode":"89b37ef8c18fd6d9","toSide":"top"},
+		{"id":"dd9456d27650e119","fromNode":"ed3617129a0fb51c","fromSide":"bottom","toNode":"c949532e564bf292","toSide":"top"},
+		{"id":"9e684488f59f15a9","fromNode":"e1f95f470742570a","fromSide":"left","toNode":"69fc04c1bf8c42e0","toSide":"right"},
+		{"id":"5d44a1375a1d56bf","fromNode":"30081aa46bf42261","fromSide":"left","toNode":"69fc04c1bf8c42e0","toSide":"right"},
+		{"id":"578520e25fee43ba","fromNode":"87411ab7aed1ed2b","fromSide":"left","toNode":"69fc04c1bf8c42e0","toSide":"right"},
+		{"id":"064b1441cba2fad2","fromNode":"294a20c88230c843","fromSide":"left","toNode":"30081aa46bf42261","toSide":"right","label":"有延迟时回放到本体"},
+		{"id":"02bc24247e7ffa8b","fromNode":"882b3f5241d0ffe1","fromSide":"bottom","toNode":"e1f95f470742570a","toSide":"top","label":"有延迟时直接反馈到预览体"}
+	]
+}

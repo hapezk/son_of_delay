@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://waa4d8cbn0si"]
+
+[ext_resource type="Script" uid="uid://bcgqb67irl0py" path="res://scenes/actors/base_actor.gd" id="1_uxuu0"]
+[ext_resource type="Script" uid="uid://bq12jgcoa3jyn" path="res://scenes/components/state_machine.gd" id="2_msdae"]
+
+[node name="BaseActor" type="CharacterBody2D" unique_id=1678858962]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_uxuu0")
+
+[node name="Components" type="Node" parent="." unique_id=1495015289]
+
+[node name="StateMachine" type="Node" parent="Components" unique_id=399535215]
+unique_name_in_owner = true
+script = ExtResource("2_msdae")
+
+[node name="VisualRoot" type="Node2D" parent="." unique_id=1473316223]
+
+[node name="Graphics" type="Node2D" parent="VisualRoot" unique_id=405451638]
+
+[node name="Sprite2D" type="Sprite2D" parent="VisualRoot/Graphics" unique_id=727615874]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="VisualRoot" unique_id=479335578]
+
+[node name="BaseCollision" type="CollisionShape2D" parent="." unique_id=1826051096]
+
+[node name="Physics" type="Node2D" parent="." unique_id=1012982934]

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CombatTuning" format=3 uid="uid://domvby016ganb"]
+
+[ext_resource type="Script" uid="uid://fcu0vvchubl0" path="res://resources/combat_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")
+attack_move_multiplier = 0.05
+air_acceleration_multiplier = 0.45
+charged_sword_tier_one_impulse = 400.0
+charged_sword_tier_two_impulse = 600.0
+charged_sword_impulse = 1000.0
+hit_stop_seconds = 0.08
+heavy_hit_stop_seconds = 0.12
+hurt_screen_flash_color = Color(0.5019608, 0.03137255, 0.019607844, 1)
+hurt_screen_vignette_inner_radius = 0.84
+hurt_screen_vignette_softness = 0.54
+hit_effect_seconds = 0.25
+hit_effect_grow_seconds = 0.03
+hit_effect_outline_width = 1.0

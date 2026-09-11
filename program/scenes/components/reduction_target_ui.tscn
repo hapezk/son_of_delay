@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scenes/components/reduction_target_ui.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/components/time_marker_ui.tscn" id="2_marker"]
+
+[node name="ReductionTargetUi" type="Node2D"]
+top_level = true
+script = ExtResource("1_script")
+
+[node name="TargetSprite" type="Sprite2D" parent="."]
+modulate = Color(0.42, 0.84, 1, 0.48)
+
+[node name="TimeMarker" parent="." instance=ExtResource("2_marker")]

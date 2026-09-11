@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/components/time_marker_ui.gd" id="1_script"]
+
+[node name="TimeMarkerUi" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -38.0
+offset_top = -96.0
+offset_right = 38.0
+offset_bottom = -48.0
+theme_override_colors/font_color = Color(0.82, 0.94, 1, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.1, 0.16, 0.9)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+text = "0.00"
+horizontal_alignment = 1
+vertical_alignment = 1

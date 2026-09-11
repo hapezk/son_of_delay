@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scenes/environment/delayable_lift_gate.gd" id="1_gate"]
+
+[sub_resource type="RectangleShape2D" id="Rectangle_gate"]
+size = Vector2(64, 760)
+
+[node name="DelayableLiftGateActor" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("1_gate")
+
+[node name="BaseCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("Rectangle_gate")
+
+[node name="VisualRoot" type="Node2D" parent="."]
+
+[node name="Graphics" type="Node2D" parent="VisualRoot"]
+
+[node name="Door" type="Polygon2D" parent="VisualRoot/Graphics"]
+polygon = PackedVector2Array(-32, -380, 32, -380, 32, 380, -32, 380)
+color = Color(0.08, 0.38, 0.43, 1)
+
+[node name="LeftEdge" type="Polygon2D" parent="VisualRoot/Graphics"]
+z_index = 1
+polygon = PackedVector2Array(-32, -380, -24, -380, -24, 380, -32, 380)
+color = Color(0.32, 0.92, 0.86, 1)
+
+[node name="RightEdge" type="Polygon2D" parent="VisualRoot/Graphics"]
+z_index = 1
+polygon = PackedVector2Array(24, -380, 32, -380, 32, 380, 24, 380)
+color = Color(0.32, 0.92, 0.86, 1)
+
+[node name="CenterGlow" type="Polygon2D" parent="VisualRoot/Graphics"]
+z_index = 2
+polygon = PackedVector2Array(-5, -380, 5, -380, 5, 380, -5, 380)
+color = Color(0.25, 0.82, 0.78, 0.9)

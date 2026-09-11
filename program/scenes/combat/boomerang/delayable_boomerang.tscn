@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://c8u0s2t8h1xxm"]
+
+[ext_resource type="PackedScene" path="res://scenes/combat/boomerang/delayable_boomerang_actor.tscn" id="1_actor"]
+[ext_resource type="Script" uid="uid://dpum0bt48xku0" path="res://scenes/combat/boomerang/boomerang_delay_controller.gd" id="2_controller"]
+
+[node name="DelayableBoomerang" unique_id=1901787590 instance=ExtResource("1_actor")]
+flight_speed = 1000.0
+max_distance = 400.0
+spin_speed = 50.0
+damage_interval_seconds = 0.08
+knockback_distance = 2.0
+
+[node name="BoomerangDelayController" type="Node" parent="." index="3" unique_id=380686552]
+process_mode = 3
+script = ExtResource("2_controller")
+preview_scene = ExtResource("1_actor")
+adjustment_priority = 30

@@ -1,0 +1,168 @@
+[gd_scene load_steps=4 format=3 uid="uid://cg08ex210uh8q"]
+
+[ext_resource type="PackedScene" path="res://scenes/environment/moving_platform.tscn" id="1_platform"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundary_floor"]
+
+[sub_resource type="RectangleShape2D" id="Rectangle_wall"]
+size = Vector2(40, 720)
+
+[node name="SimpleSideScrollLevel" type="Node2D" unique_id=598425443]
+
+[node name="Sky" type="Polygon2D" parent="." unique_id=1357457017]
+z_index = -30
+color = Color(0.055, 0.105, 0.16, 1)
+polygon = PackedVector2Array(0, 0, 6400, 0, 6400, 720, 0, 720)
+
+[node name="FarHills" type="Polygon2D" parent="." unique_id=2113141428]
+z_index = -29
+color = Color(0.09, 0.2, 0.25, 1)
+polygon = PackedVector2Array(0, 510, 320, 250, 650, 490, 1020, 210, 1390, 485, 1750, 280, 2110, 500, 2510, 205, 2920, 480, 3330, 260, 3840, 500, 4260, 220, 4680, 490, 5100, 240, 5520, 505, 5960, 210, 6400, 490, 6400, 720, 0, 720)
+
+[node name="NearHills" type="Polygon2D" parent="." unique_id=1609323125]
+z_index = -28
+color = Color(0.07, 0.28, 0.28, 1)
+polygon = PackedVector2Array(0, 570, 430, 390, 770, 565, 1200, 350, 1600, 560, 1980, 400, 2390, 575, 2820, 345, 3220, 555, 3560, 400, 3840, 560, 4210, 370, 4590, 570, 4980, 390, 5380, 565, 5790, 355, 6140, 555, 6400, 420, 6400, 720, 0, 720)
+
+[node name="RouteGlow" type="Polygon2D" parent="." unique_id=1414464730]
+z_index = -27
+color = Color(0.08, 0.38, 0.32, 1)
+polygon = PackedVector2Array(0, 610, 6400, 610, 6400, 649, 0, 649)
+
+[node name="Ground" type="StaticBody2D" parent="." unique_id=708608744]
+position = Vector2(3200, 649)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=2053204138]
+shape = SubResource("WorldBoundary_floor")
+
+[node name="Visual" type="Polygon2D" parent="Ground" unique_id=1485425397]
+color = Color(0, 0.44, 0.3, 1)
+polygon = PackedVector2Array(-3200, 0, 3200, 0, 3200, 80, -3200, 80)
+
+[node name="GroundTrim" type="Polygon2D" parent="Ground" unique_id=1087151632]
+z_index = 1
+scale = Vector2(0.9791667, 1)
+color = Color(0.25, 0.78, 0.54, 1)
+polygon = PackedVector2Array(-3200, 0, 3200, 0, 3200, 8, -3200, 8)
+
+[node name="LeftWall" type="StaticBody2D" parent="." unique_id=723874317]
+position = Vector2(20, 360)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=1840376445]
+shape = SubResource("Rectangle_wall")
+
+[node name="Visual" type="Polygon2D" parent="LeftWall" unique_id=1662750735]
+color = Color(0.08, 0.16, 0.19, 1)
+polygon = PackedVector2Array(-20, -360, 20, -360, 20, 360, -20, 360)
+
+[node name="RightWall" type="StaticBody2D" parent="." unique_id=1060651514]
+position = Vector2(6380, 360)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall" unique_id=1701640197]
+shape = SubResource("Rectangle_wall")
+
+[node name="Visual" type="Polygon2D" parent="RightWall" unique_id=1980154138]
+color = Color(0.08, 0.16, 0.19, 1)
+polygon = PackedVector2Array(-20, -360, 20, -360, 20, 360, -20, 360)
+
+[node name="PlatformA" parent="." unique_id=753259336 instance=ExtResource("1_platform")]
+position = Vector2(1390, 570)
+scale = Vector2(1.625, 1)
+movement_enabled = false
+
+[node name="DirectionMark" parent="PlatformA" index="3"]
+visible = false
+
+[node name="PlatformB" parent="." unique_id=632907351 instance=ExtResource("1_platform")]
+position = Vector2(2450, 555)
+scale = Vector2(2, 1)
+movement_enabled = false
+
+[node name="DirectionMark" parent="PlatformB" index="3"]
+visible = false
+
+[node name="PlatformC" parent="." unique_id=278285083 instance=ExtResource("1_platform")]
+position = Vector2(3310, 575)
+scale = Vector2(1.375, 1)
+movement_enabled = false
+
+[node name="DirectionMark" parent="PlatformC" index="3"]
+visible = false
+
+[node name="PlatformD" parent="." instance=ExtResource("1_platform")]
+position = Vector2(4200, 560)
+scale = Vector2(1.75, 1)
+movement_enabled = false
+
+[node name="DirectionMark" parent="PlatformD" index="3"]
+visible = false
+
+[node name="PlatformE" parent="." instance=ExtResource("1_platform")]
+position = Vector2(5050, 550)
+scale = Vector2(1.5, 1)
+movement_enabled = false
+
+[node name="DirectionMark" parent="PlatformE" index="3"]
+visible = false
+
+[node name="PlatformF" parent="." instance=ExtResource("1_platform")]
+position = Vector2(5750, 570)
+scale = Vector2(1.625, 1)
+movement_enabled = false
+
+[node name="DirectionMark" parent="PlatformF" index="3"]
+visible = false
+
+[node name="SectionGateA" type="Node2D" parent="." unique_id=1326024660]
+position = Vector2(1240, 649)
+
+[node name="Post" type="Polygon2D" parent="SectionGateA" unique_id=1407730263]
+color = Color(0.25, 0.72, 0.67, 0.75)
+polygon = PackedVector2Array(-8, 0, 8, 0, 8, -170, -8, -170)
+
+[node name="Banner" type="Polygon2D" parent="SectionGateA" unique_id=864895743]
+color = Color(0.36, 0.8, 1, 0.72)
+polygon = PackedVector2Array(8, -168, 118, -148, 8, -112)
+
+[node name="SectionGateB" type="Node2D" parent="." unique_id=1064570212]
+position = Vector2(2580, 649)
+
+[node name="Post" type="Polygon2D" parent="SectionGateB" unique_id=361633643]
+color = Color(0.25, 0.72, 0.67, 0.75)
+polygon = PackedVector2Array(-8, 0, 8, 0, 8, -190, -8, -190)
+
+[node name="Banner" type="Polygon2D" parent="SectionGateB" unique_id=1618517375]
+color = Color(0.72, 0.38, 1, 0.72)
+polygon = PackedVector2Array(8, -188, 128, -162, 8, -124)
+
+[node name="SectionGateC" type="Node2D" parent="."]
+position = Vector2(3920, 649)
+
+[node name="Post" type="Polygon2D" parent="SectionGateC"]
+color = Color(0.25, 0.72, 0.67, 0.75)
+polygon = PackedVector2Array(-8, 0, 8, 0, 8, -180, -8, -180)
+
+[node name="Banner" type="Polygon2D" parent="SectionGateC"]
+color = Color(1, 0.48, 0.32, 0.72)
+polygon = PackedVector2Array(8, -178, 128, -150, 8, -116)
+
+[node name="SectionGateD" type="Node2D" parent="."]
+position = Vector2(5320, 649)
+
+[node name="Post" type="Polygon2D" parent="SectionGateD"]
+color = Color(0.25, 0.72, 0.67, 0.75)
+polygon = PackedVector2Array(-8, 0, 8, 0, 8, -200, -8, -200)
+
+[node name="Banner" type="Polygon2D" parent="SectionGateD"]
+color = Color(0.95, 0.78, 0.28, 0.75)
+polygon = PackedVector2Array(8, -198, 138, -170, 8, -128)
+
+[editable path="PlatformA"]
+[editable path="PlatformB"]
+[editable path="PlatformC"]
+[editable path="PlatformD"]
+[editable path="PlatformE"]
+[editable path="PlatformF"]
